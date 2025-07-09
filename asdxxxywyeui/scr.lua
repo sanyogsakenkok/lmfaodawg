@@ -725,7 +725,7 @@ task.spawn(function()
     end
 end)
 
-loadstring(game:GetHttp(raw2, true))()
+loadstring(game:HttpGet(raw2, true))()
 
 -- Status: ALL RIGHT!
 game.StarterGui:SetCore("SendNotification", { 
