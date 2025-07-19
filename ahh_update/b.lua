@@ -626,7 +626,7 @@ local function ragedash()
     playRageDashSound()
     local Camera = workspace.CurrentCamera
     local LookVector = Camera.CFrame.LookVector * Vector3.new(1, 0, 1).Unit
-    local offset = LookVector * tonumber(Dash_Value)
+    local offset = LookVector * tonumber(_G.Config.Dash_Value)
     local character = Player.Character or Player.CharacterAdded:Wait()
     character:PivotTo(character:GetPivot() + offset)
     task.wait(COOLDOWN)
@@ -750,7 +750,6 @@ Player.CharacterAdded:Connect(function(character)
     end
 end)
 -- [FUNCTION] Speedhack : "Q" bind
-local player = game:GetService("Players").LocalPlayer
 local connection
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed and input.KeyCode == Enum.KeyCode.Q then
