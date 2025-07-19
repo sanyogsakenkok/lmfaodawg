@@ -8,7 +8,6 @@ local hud = gui:WaitForChild("HUD")
 
 local autoSkillCheckMode = "Great"
 local function pressSpace()
-    print("[DEBUG] Нажимаю SPACE")
     vim:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
     task.wait()
     vim:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
@@ -652,7 +651,7 @@ local function LegitDash()
     if not Humanoid or not RootPart or Humanoid.Health <= 0 then return end
     local LookVector = RootPart.CFrame.LookVector * Vector3.new(1, 0, 1).Unit
     local BodyVelocity = Instance.new("BodyVelocity")
-    BodyVelocity.Velocity = LookVector * LegitDash_Value
+    BodyVelocity.Velocity = LookVector * _G.Config.LegitDash_Value
     BodyVelocity.MaxForce = Vector3.new(1e6, 0, 1e6)
     BodyVelocity.P = 1e5
     BodyVelocity.Parent = RootPart
@@ -717,17 +716,17 @@ RunService.Heartbeat:Connect(function(dt)
             local wiggleOffset = math.sin(WiggleAngle) * WIGGLE_AMOUNT
             local cameraLook = camera.CFrame.LookVector
             local targetAngle
-            if mw_Type == "Backward" then
+            if _G.Config.mw_Type == "Backward" then
                 targetAngle = math.atan2(cameraLook.X, cameraLook.Z) + math.pi + wiggleOffset
                 humanoid:Move(-cameraLook)
-            elseif mw_Type == "Forward" then
+            elseif _G.Config.mw_Type == "Forward" then
                 targetAngle = math.atan2(cameraLook.X, cameraLook.Z) + wiggleOffset
                 humanoid:Move(cameraLook)
-            elseif mw_Type == "Left Side" then
+            elseif _G.Config.mw_Type == "Left Side" then
                 targetAngle = math.atan2(cameraLook.X, cameraLook.Z) + math.pi / 2 + wiggleOffset
                 local sideLook = Vector3.new(-cameraLook.Z, 0, cameraLook.X).Unit
                 humanoid:Move(sideLook)
-            elseif mw_Type == "Right Side" then
+            elseif _G.Config.mw_Type == "Right Side" then
                 targetAngle = math.atan2(cameraLook.X, cameraLook.Z) - math.pi / 2 + wiggleOffset
                 local sideLook = Vector3.new(cameraLook.Z, 0, -cameraLook.X).Unit
                 humanoid:Move(sideLook)
@@ -776,11 +775,11 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     
             local newSpeed = movement:GetAttribute("DefaultSpeed")
             
-            if values.HealthState and values.HealthState.Value == 0 and Speedhack_Crawl_value ~= 0 then
-                newSpeed = newSpeed + Speedhack_Crawl_value
-            elseif values.Crouching and values.Crouching.Value and Speedhack_Crouch_Value ~= 0 then
-                newSpeed = newSpeed + Speedhack_Crouch_Value
-            elseif enable_Speedhack then
+            if values.HealthState and values.HealthState.Value == 0 and _G.Config.Speedhack_Crawl_value ~= 0 then
+                newSpeed = newSpeed + _G.Config.Speedhack_Crawl_value
+            elseif values.Crouching and values.Crouching.Value and _G.Config.Speedhack_Crouch_Value ~= 0 then
+                newSpeed = newSpeed + _G.Config.Speedhack_Crouch_Value
+            elseif _G.Config.enable_Speedhack then
                 for _, killer in pairs(game:GetService("Players"):GetPlayers()) do
                     if killer.Backpack and killer.Backpack.Scripts and killer.Backpack.Scripts.Killer and killer.Backpack.Scripts.Killer.Value and workspace[killer.Name]:FindFirstChild("Humanoid") then
                         movement:SetAttribute("SpeedMultiplier", 1)
@@ -1106,26 +1105,26 @@ local function remoteRepair()
 end
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed and input.KeyCode == Enum.KeyCode.N then
-        if remoteIntType1 == "Players" then
+        if _G.Config.remoteIntType1 == "Players" then
             remotePlayers()
-        elseif remoteIntType1 == "Exit Gates" then
+        elseif _G.Config.remoteIntType1 == "Exit Gates" then
             remoteExitGate()
-        elseif remoteIntType1 == "Hooks" then
+        elseif _G.Config.remoteIntType1 == "Hooks" then
             remoteHooks()
-        elseif remoteIntType1 == "Generators" then
+        elseif _G.Config.remoteIntType1 == "Generators" then
             remoteRepair()
         end
     end
 end)
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed and input.KeyCode == Enum.KeyCode.M then
-        if remoteIntType2 == "Players" then
+        if _G.Config.remoteIntType2 == "Players" then
             remotePlayers()
-        elseif remoteIntType2 == "Exit Gates" then
+        elseif _G.Config.remoteIntType2 == "Exit Gates" then
             remoteExitGate()
-        elseif remoteIntType2 == "Hooks" then
+        elseif _G.Config.remoteIntType2 == "Hooks" then
             remoteHooks()
-        elseif remoteIntType2 == "Generators" then
+        elseif _G.Config.remoteIntType2 == "Generators" then
             remoteRepair()
         end
     end
