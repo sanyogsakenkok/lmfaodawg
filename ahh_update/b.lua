@@ -138,7 +138,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftAlt and enabled_PalletExploit == "ON" then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftAlt and _G.Config.enabled_PalletExploit == "ON" then
         for _, pallet in pairs(workspace:GetChildren()) do
             if pallet.Name:match("Pallet%d") then
                 local firstPort = pallet:FindFirstChild("FirstPort")
