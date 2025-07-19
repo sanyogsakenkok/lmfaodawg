@@ -32,7 +32,7 @@ _G.Config = {
     autoSkillCheckMode = "Insta"
 }
 local raw1 = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/ahh_update/a.lua?v=" .. tostring(tick())
-local raw2 = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/ahh_update/b.lua.lua?v=" .. tostring(tick())
+local raw2 = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/ahh_update/b.lua?v=" .. tostring(tick())
 loadstring(game:HttpGet(raw1, true))()
 
 --// Main GUI \\--
