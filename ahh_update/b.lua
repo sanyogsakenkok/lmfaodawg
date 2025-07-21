@@ -680,7 +680,7 @@ Player.CharacterAdded:Connect(function(newChar)
     end
 end)
 -- [FUNCTION] Jump : "T" bind (funny function)
-local player = Players.LocalPlayer
+local player = game:GetService("Players").LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local jumpForce = 40 -- Your jump force value
