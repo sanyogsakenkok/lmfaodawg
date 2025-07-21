@@ -86,27 +86,112 @@ task.spawn(function()
         end
     end
 end)
--- [FUNCTION] Kick All Generators
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.O then
-        for _, gen in pairs(workspace:GetChildren()) do
-            if gen.Name:match("Generator%d") then
-                local args = {
-                    [1] = "Generator";
-                    [2] = "Killer_Kick";
-                    [3] = workspace:WaitForChild(gen.Name, 9e9);
-                    [4] = workspace:WaitForChild(gen.Name, 9e9):WaitForChild("Workspots", 9e9):WaitForChild("Back", 9e9);
-                }
-                    
-                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
-            end
+-- [FUNCTION] Break All Pallets
+function BreakAllPallets()
+    for _, i in pairs(workspace:GetChildren()) do
+        if i.Name:match("Pallet%d") then
+            local args = {
+                [1] = "Pallet";
+                [2] = "Killer_Kick";
+                [3] = workspace:WaitForChild(i.Name, 9e9);
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))       
         end
     end
-end)
--- [FUNCTION] Sound Effect from You
+end
+-- [FUNCTION] Hook Target
+function HookSurvivor()
+    local args = {
+        [1] = "Hook";
+        [2] = "Hook";
+        [3] = workspace:WaitForChild(_G.Config.input_TargetSurvName, 9e9);
+        [4] = workspace:WaitForChild("Hook1", 9e9);
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
+end
+-- [FUNCTION] Grab Survivor
+function GrabSurvivor()
+    local args = {
+        [1] = "Carry";
+        [2] = "Pickup_Default";
+        [3] = game:GetService("Players"):WaitForChild(_G.Config.input_TargetSurvName, 9e9);
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
+end
+-- [FUNCTION] Magic Hit(TRAPPER ONLY)
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Nine then
-        local function getKiller()
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.Five then
+        local args = {
+            [1] = true;
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("CollisionEvent", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = "rbxassetid://5527373079";
+            [2] = "Lunge";
+            [3] = 3;
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("RemoteEvent2", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = "rbxassetid://1848527922";
+            [2] = "Swing";
+            [3] = 2;
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("RemoteEvent2", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = "Start_Hit";
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Swing", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = workspace:WaitForChild(game:GetService("Players").LocalPlayer.Name, 9e9):WaitForChild("Trapper", 9e9):WaitForChild("Handle", 9e9):WaitForChild("LungeSound", 9e9);
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("RemoteEvent", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = "Hit";
+            [2] = workspace:WaitForChild(_G.Config.input_TargetSurvName, 9e9):WaitForChild("HumanoidRootPart", 9e9);
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Swing", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = workspace:WaitForChild(game:GetService("Players").LocalPlayer.Name, 9e9):WaitForChild("Trapper", 9e9):WaitForChild("Handle", 9e9):WaitForChild("SwingSound", 9e9);
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("RemoteEvent", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = "Stop_Hit";
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Swing", 9e9):FireServer(unpack(args))
+        local args = {
+            [1] = false;
+        }
+
+        game:GetService("Players").LocalPlayer:WaitForChild("Backpack", 9e9):WaitForChild("Scripts", 9e9):WaitForChild("GlobalKiller", 9e9):WaitForChild("Action", 9e9):WaitForChild("BasicAttack", 9e9):WaitForChild("CollisionEvent", 9e9):FireServer(unpack(args))
+
+    end
+end)
+-- [FUNCTION] Kick All Generators
+function KickAllGenerators()
+    for _, gen in pairs(workspace:GetChildren()) do
+        if gen.Name:match("Generator%d") then
+            local args = {
+                [1] = "Generator";
+                [2] = "Killer_Kick";
+                [3] = workspace:WaitForChild(gen.Name, 9e9);
+                [4] = workspace:WaitForChild(gen.Name, 9e9):WaitForChild("Workspots", 9e9):WaitForChild("Back", 9e9);
+            }
+                
+            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
+        end
+    end
+end
+-- [FUNCTION] Sound Effect from You
+function SoundEffectFromYourself()
+    local function getKiller()
             for _, player in pairs(game:GetService("Players"):GetPlayers()) do
                 local backpack = player:FindFirstChild("Backpack")
                 if backpack then
@@ -128,17 +213,15 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
             [3] = "Default";
             [4] = game:GetService("Players"):WaitForChild(klr, 9e9);
         }
-        
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Notification", 9e9):FireServer(unpack(args))
-    end
-end)
+end
 -- [FUNCTION] Pallet Exploit
 local player = game:GetService("Players").LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftAlt and _G.Config.enabled_PalletExploit == "ON" then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftAlt and _G.Config.enabled_PalletExploit then
         for _, pallet in pairs(workspace:GetChildren()) do
             if pallet.Name:match("Pallet%d") then
                 local firstPort = pallet:FindFirstChild("FirstPort")
@@ -207,9 +290,8 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 -- [FUNCTION] Bless All Totems
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Eight then
-        for _, totem in pairs(workspace:GetChildren()) do
+function BlessAllTotems()
+    for _, totem in pairs(workspace:GetChildren()) do
             if totem.Name:match("Totem%d") then
                 local args = {
                     [1] = workspace:WaitForChild(totem.Name, 9e9);
@@ -223,12 +305,10 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
                 game:GetService("ReplicatedStorage"):WaitForChild("-LockerAuras", 9e9):WaitForChild("Boon_Handler", 9e9):FireServer(unpack(args))
             end
         end
-    end
-end)
+end
 -- [FUNCTION] Open All Lockers
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Seven then
-        for _, obj in pairs(workspace:GetChildren()) do
+function OpenAllLockers()
+    for _, obj in pairs(workspace:GetChildren()) do
             if obj.Name:match("Hiding_Spot_%d") then
                 local args = {
                     [1] = "Locker";
@@ -239,12 +319,11 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
                 game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
             end
         end
-    end
-end)
+end
 -- [FUNCTION] Self Heal
 local isHealing = false
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Five then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.Three then
         local lcplr = game:GetService("Players").LocalPlayer
         isHealing = not isHealing
         if isHealing then
@@ -257,6 +336,23 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
                 };
             }
             game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("ClientToServer", 9e9):WaitForChild("HealingEvent", 9e9):FireServer(unpack(args))
+
+            task.spawn(function ()
+                local values = game:GetService("Players").LocalPlayer.Backpack.Scripts.values
+                local valueRN = values.HealthState.Value
+                while true do
+                    task.wait(0.1)
+                    if values.HealthState.Value ~= valueRN then
+                        isHealing = not isHealing
+                        local args = {
+                            [1] = lcplr.Name;
+                            [2] = "Stop";
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("ClientToServer", 9e9):WaitForChild("HealingEvent", 9e9):FireServer(unpack(args))
+                        break
+                    end
+                end
+            end)
         else
             local args = {
                 [1] = lcplr.Name;
@@ -269,9 +365,8 @@ end)
 
 -- [FUNCTION] Heal Selected Player
 local isHealingSomeone = false
-local conn = nil
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Six then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.Four then
         isHealingSomeone = not isHealingSomeone
         if isHealingSomeone then
             local args = {
@@ -283,6 +378,27 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
                 };
             }
             game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("ClientToServer", 9e9):WaitForChild("HealingEvent", 9e9):FireServer(unpack(args))
+            
+            task.spawn(function ()
+                local trgt = _G.Config.input_TargetSurvName
+                local values = game:GetService("Players"):FindFirstChild(trgt).Backpack.Scripts.values
+                if not values then
+                    ttl("Critical error while healing someone")
+                    warn("[HEAL SOMEONE] player doesnt founded or 'Backpack.Scripts.values' doesnt founded!")
+                end
+                while true do
+                    task.wait(0.1)
+                    if values.HealthState.Value ~= valueRN then
+                        isHealingSomeone = not isHealingSomeone
+                        local args = {
+                            [1] = _G.Config.input_TargetSurvName;
+                            [2] = "Stop";
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("ClientToServer", 9e9):WaitForChild("HealingEvent", 9e9):FireServer(unpack(args))
+                        break
+                    end
+                end
+            end)
         else
             local args = {
                 [1] = _G.Config.input_TargetSurvName;
@@ -293,8 +409,8 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 -- [FUNCTION] Auto Wiggle 
-local function AutoWiggle()
-    while true do
+function AutoWiggle()
+    while _G.Config.enable_AutoWiggle do
         local function getKillerName()
             for _, player in pairs(game:GetService("Players"):GetPlayers()) do
                 local backpack = player:FindFirstChild("Backpack")
@@ -319,12 +435,13 @@ local function AutoWiggle()
         task.wait(0.1)
     end
 end
-coroutine.wrap(AutoWiggle)()
--- [FUNCTION] Stun : "H" bind
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local lpValues = LocalPlayer.Backpack.Scripts.values
-local function stun()
+task.spawn(AutoWiggle)
+-- [FUNCTION] Stun
+function stun()
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local lpValues = LocalPlayer.Backpack.Scripts.values
+
     local stunned = lpValues:FindFirstChild("Stunned")
     local isStunned = stunned.Value
     if isStunned then
@@ -335,11 +452,6 @@ local function stun()
         isStunned = true
     end
 end
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if input.KeyCode == Enum.KeyCode.H and not gameProcessed then
-        stun()
-    end
-end)
 -- [FUNCTION] Blind Killer : "Z" bind
 local function getKillerName()
     for _, player in pairs(Players:GetPlayers()) do
@@ -381,9 +493,9 @@ game:GetService("UserInputService").InputEnded:Connect(function(input, gameProce
         blindklr("stop")
     end
 end)
--- [FUNCTION] Teleport to Secret Place : "Y" bind
-local Player = game:GetService("Players").LocalPlayer
-local function teleportToTemplate()
+-- [FUNCTION] Teleport to Secret Place
+function teleportToTemplate()
+    local Player = game:GetService("Players").LocalPlayer
     local character = Player.Character or Player.CharacterAdded:Wait()
     local root = character:FindFirstChild("HumanoidRootPart")
     local tmp = workspace:FindFirstChild("SurvivorTemplate2")
@@ -409,14 +521,9 @@ local function teleportToTemplate()
         warn("Template != model?")
     end
 end
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Y then
-        teleportToTemplate()
-    end
-end)
--- [FUNCTION] Teleport to Hatch : "Down Arrow" bind
-local Player = game:GetService("Players").LocalPlayer
-local function teleportToHatch()
+-- [FUNCTION] Teleport to Hatch
+function teleportToHatch()
+    local Player = game:GetService("Players").LocalPlayer
     local character = Player.Character or Player.CharacterAdded:Wait()
     local root = character:FindFirstChild("HumanoidRootPart")
     local hatch = workspace:FindFirstChild("Hatch")
@@ -433,15 +540,9 @@ local function teleportToHatch()
         warn("Hatch -> Model ???")
     end
 end
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Down then
-        teleportToHatch()
-    end
-end)
--- [FUNCTION] Teleport to ExitGates : "J" bind
-local Player = game:GetService("Players").LocalPlayer
-local teleported = false
-local function teleportToExitGate()
+-- [FUNCTION] Teleport to ExitGates
+function teleportToExitGate(teleported)
+    local Player = game:GetService("Players").LocalPlayer
     local character = Player.Character or Player.CharacterAdded:Wait()
     local root = character:FindFirstChild("HumanoidRootPart")
     local eg1 = workspace:FindFirstChild("ExitGate1")
@@ -451,20 +552,13 @@ local function teleportToExitGate()
     if root and eg1 and eg1:IsA("Model") and esc1 and eg2 and eg2:IsA("Model") and esc2 then
         if not teleported then
             root.CFrame = esc1.CFrame + Vector3.new(0, 0, 0)
-            teleported = true
         else
             root.CFrame = esc2.CFrame + Vector3.new(0, 0, 0)
-            teleported = false
         end
     else
         warn("ExitGate != model?")
     end
 end
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.J then
-        teleportToExitGate()
-    end
-end)
 -- [FUNCTION] Teleport to Killer : "Up Arrow" bind
 local function getKillerName()
     for _, player in pairs(Players:GetPlayers()) do
@@ -749,52 +843,53 @@ Player.CharacterAdded:Connect(function(character)
         humanoid.AutoRotate = OriginalAutoRotate
     end
 end)
--- [FUNCTION] Speedhack : "Q" bind
+-- [FUNCTION] Speedhack
 local connection
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.Q then
-        local player = game:GetService("Players").LocalPlayer
-        local movement = game:GetService("ReplicatedStorage").Match.Players[player.Name].Movement
+if _G.Config.enable_Speedhack then
+    local player = game:GetService("Players").LocalPlayer
+    local movement = game:GetService("ReplicatedStorage").Match.Players[player.Name].Movement
+    
+    if connection then
+        connection:Disconnect()
+        connection = nil
+        movement:SetAttribute("Speed", movement:GetAttribute("DefaultSpeed"))
+        return
+    end
+    
+    connection = game:GetService("RunService").Heartbeat:Connect(function()
+        if not player.Character then return end
         
-        if connection then
-            connection:Disconnect()
-            connection = nil
+        local humanoid = player.Character:FindFirstChild("Humanoid")
+        if not humanoid then return end
+        
+        local values = player:FindFirstChild("Backpack") and player.Backpack.Scripts.values
+        if not values then return end
+
+        local newSpeed = movement:GetAttribute("DefaultSpeed")
+        
+        if values.HealthState and values.HealthState.Value == 0 and _G.Config.Speedhack_Crawl_value ~= 0 then
+            newSpeed = newSpeed + _G.Config.Speedhack_Crawl_value
+            if character and character:FindFirstChildOfClass("Humanoid") then
+                character:FindFirstChildOfClass("Humanoid").WalkSpeed = newSpeed
+            end
+        elseif values.Crouching and values.Crouching.Value and _G.Config.Speedhack_Crouch_Value ~= 0 then
+            newSpeed = newSpeed + _G.Config.Speedhack_Crouch_Value
+        elseif _G.Config.enable_Player_Speedhack then
+            for _, killer in pairs(game:GetService("Players"):GetPlayers()) do
+                if killer.Backpack and killer.Backpack.Scripts and killer.Backpack.Scripts.Killer and killer.Backpack.Scripts.Killer.Value and workspace[killer.Name]:FindFirstChild("Humanoid") then
+                    movement:SetAttribute("SpeedMultiplier", 1)
+                    newSpeed = workspace[killer.Name].Humanoid.WalkSpeed
+                    break
+                end
+            end
+        else
             movement:SetAttribute("Speed", movement:GetAttribute("DefaultSpeed"))
-            return
         end
         
-        connection = game:GetService("RunService").Heartbeat:Connect(function()
-            if not player.Character then return end
-            
-            local humanoid = player.Character:FindFirstChild("Humanoid")
-            if not humanoid then return end
-            
-            local values = player:FindFirstChild("Backpack") and player.Backpack.Scripts.values
-            if not values then return end
-    
-            local newSpeed = movement:GetAttribute("DefaultSpeed")
-            
-            if values.HealthState and values.HealthState.Value == 0 and _G.Config.Speedhack_Crawl_value ~= 0 then
-                newSpeed = newSpeed + _G.Config.Speedhack_Crawl_value
-            elseif values.Crouching and values.Crouching.Value and _G.Config.Speedhack_Crouch_Value ~= 0 then
-                newSpeed = newSpeed + _G.Config.Speedhack_Crouch_Value
-            elseif _G.Config.enable_Speedhack then
-                for _, killer in pairs(game:GetService("Players"):GetPlayers()) do
-                    if killer.Backpack and killer.Backpack.Scripts and killer.Backpack.Scripts.Killer and killer.Backpack.Scripts.Killer.Value and workspace[killer.Name]:FindFirstChild("Humanoid") then
-                        movement:SetAttribute("SpeedMultiplier", 1)
-                        newSpeed = workspace[killer.Name].Humanoid.WalkSpeed
-                        break
-                    end
-                end
-            else
-                movement:SetAttribute("Speed", movement:GetAttribute("DefaultSpeed"))
-            end
-            
-            movement:SetAttribute("Speed", newSpeed)
-        end)
-    end
-end)
--- [FUNCTION] Teleport to Survivors : "U" bind
+        movement:SetAttribute("Speed", newSpeed)
+    end)
+end
+-- [FUNCTION] Teleport to Survivors : "DownArrow" bind
 local LocalPlayer = Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 local LastSurv = nil
@@ -879,7 +974,7 @@ local function teleportToSurv()
     end
 end
 UIS.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.U then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.DownArrow then
         teleportToSurv()
     end
 end)
