@@ -1,4 +1,7 @@
 --// [!] FUNCTIONS \\--
+--
+--
+--
 -- [FUNCTION] Auto Skillcheck
 local RunService = game:GetService("RunService")
 local vim = game:GetService("VirtualInputManager")
