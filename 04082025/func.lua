@@ -731,8 +731,8 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 -- Fast TP access
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-	if not gameProcessed and UserInputService:IsKeyDown(Enum.KeyCode.RightAlt) then
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+	if not gameProcessed and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightAlt) then
 		if input.KeyCode == Enum.KeyCode.One then
 			teleportToKiller()
 		elseif input.KeyCode == Enum.KeyCode.Two then
@@ -1268,4 +1268,3 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('#2 done')
