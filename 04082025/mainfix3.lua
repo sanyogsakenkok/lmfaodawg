@@ -145,12 +145,59 @@ local RedStain_B = 1
 -- ESP обработчики
 -----------------------
 local esp_link = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/04082025/espfix.lua?v=" .. tostring(tick())
-local func_link = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/04082025/funcfix2.lua?v=" .. tostring(tick())
+local func_link = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/04082025/funcfix3.lua?v=" .. tostring(tick())
 
 loadstring(game:HttpGet(esp_link, true))()
 loadstring(game:HttpGet(func_link, true))()
 ----------------------------
-
+-- Selector!
+local Camera = workspace.CurrentCamera
+local circle = Drawing.new("Circle")
+circle.Visible = true
+circle.Color = Color3.new(1,1,1)
+circle.Position = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
+circle.Radius = 50
+circle.Thickness = 1
+local function findTargetInCircle()
+    local closestPlayer, smallestDistance = nil, circle.Radius
+    local localPlayer = game:GetService("Players").LocalPlayer
+    
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+            local head = player.Character:FindFirstChild("Head")
+            
+            if humanoidRootPart then
+                local screenPosition, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+                
+                if onScreen then
+                    local distance = (Vector2.new(screenPosition.X, screenPosition.Y) - circle.Position).Magnitude
+                    
+                    if distance <= circle.Radius and distance < smallestDistance then
+                        smallestDistance = distance
+                        closestPlayer = player
+                    end
+                end
+            end
+        end
+    end
+    
+    return closestPlayer
+end
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.C and circle.Visible then
+        local target = findTargetInCircle()
+        if target then
+            _G.Config.input_TargetSurvName = target.Name
+        else
+            warn("[SELECTOR] No one founded in Circle!")
+        end
+    end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+    circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+end)
 
 if game:GetService("CoreGui"):FindFirstChild("AnalDestroyerGUI") then
 	game:GetService("CoreGui"):FindFirstChild("AnalDestroyerGUI"):Destroy()
@@ -1360,57 +1407,6 @@ task.spawn(function()
         end
         task.wait(0.05)
     end
-end)
-
-
-
--- Selector!
-local Camera = workspace.CurrentCamera
-local circle = Drawing.new("Circle")
-circle.Visible = true
-circle.Color = Color3.new(1,1,1)
-circle.Position = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
-circle.Radius = 50
-circle.Thickness = 1
-local function findTargetInCircle()
-    local closestPlayer, smallestDistance = nil, circle.Radius
-    local localPlayer = game:GetService("Players").LocalPlayer
-    
-    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.Character then
-            local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-            local head = player.Character:FindFirstChild("Head")
-            
-            if humanoidRootPart then
-                local screenPosition, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
-                
-                if onScreen then
-                    local distance = (Vector2.new(screenPosition.X, screenPosition.Y) - circle.Position).Magnitude
-                    
-                    if distance <= circle.Radius and distance < smallestDistance then
-                        smallestDistance = distance
-                        closestPlayer = player
-                    end
-                end
-            end
-        end
-    end
-    
-    return closestPlayer
-end
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.C and circle.Visible then
-        local target = findTargetInCircle()
-        if target then
-            _G.Config.input_TargetSurvName = target.Name
-        else
-            warn("[SELECTOR] No one founded in Circle!")
-        end
-    end
-end)
-Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-    circle.Position = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
 end)
 --------------------------
 -- КЛАВИША INSERT
