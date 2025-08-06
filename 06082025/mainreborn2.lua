@@ -228,7 +228,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 25)
 Title.Position = UDim2.new(0, 0, 0, 4)
 Title.BackgroundTransparency = 1
-Title.Text = "Anal Destroyer v4.0.0"
+Title.Text = "Anal Destroyer v4.0.2"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -292,7 +292,7 @@ MainFrame.Parent = ScreenGui
 
 -- Заголовок
 local Title = Instance.new("TextLabel")
-Title.Text = "Anal Destroyer v4.0.0"
+Title.Text = "Anal Destroyer v4.0.2"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 24
 Title.TextColor3 = BLUE_COLOR
@@ -1292,11 +1292,13 @@ CreateConsoleInput("Command", function(command, ...)
 		local amount = tonumber(args[1])
 		local sleep = tonumber(args[2])
         local i = 0
-		while i < amount do
-            i += 1
-            OpenAllLockers()
-            task.wait(sleep)
-        end
+		if amount > 0 and sleep > 0.09 then
+			while i < amount do
+				i += 1
+				OpenAllLockers()
+				task.wait(sleep)
+			end
+		end
     elseif command == "tp" then
         local arg = tostring(args[1])
         local arg2 = tostring(args[2])
@@ -1372,13 +1374,24 @@ CreateConsoleInput("Command", function(command, ...)
 	elseif command == "m1" then
 		_G.Config.m1_enabled = not _G.Config.m1_enabled
 		ttl(command .. " = " .. _G.Config.m1_enabled)
+	elseif command == "dosound" or command == "ds" then
+		local sound = tostring(args[1])
+		local amount = tonumber(args[2])
+		local sleep = tonumber(args[3])
+		local i = 0
+		if sound ~= nil and amount > 0 and sleep > 0.09 then
+			while i < amount do
+				DoSound(sound)
+				task.wait(sleep)
+			end
+		end
 	else
 		ttl("Unknown command!")
-		error("[CONSOLE] Unknown command '" .. command .. "'! Check list of commands in our Discord.")
+		warn("[CONSOLE] Unknown command '" .. command .. "'! Check list of commands in our Discord.")
 	end
 end)
 --------------------------
--- FUNCTIONZ
+-- ФУНКЦИИ
 --------------------------
 local function hsvToRgb(h, s, v)
     local r, g, b
@@ -1433,7 +1446,7 @@ task.spawn(function()
     end
 end)
 --------------------------
--- INSERT
+-- КЛАВИША INSERT
 --------------------------
 local cursorVisible = false
 local function setCursorState(state)
