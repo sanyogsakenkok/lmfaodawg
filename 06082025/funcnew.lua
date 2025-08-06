@@ -136,29 +136,33 @@ local function getLatestZone(skillCheck, mode)
     return candidates[#candidates]
 end
 local autoSkillCheckMode = "Great"
+local lastSkillCheck = nil
 task.spawn(function()
     while true do
-        task.wait(0.1)
-
+        task.wait(0.01)
         local skillCheck = hud:FindFirstChild("SkillCheck")
-        if skillCheck and skillCheck.Visible then
+        if skillCheck and skillCheck.Visible and skillCheck ~= lastSkillCheck then
+            lastSkillCheck = skillCheck
 
             local needle = skillCheck:FindFirstChild("Needle")
             if not needle then
                 warn("[AutoSkillcheck] Needle doesnt founded")
                 continue
             end
+
             local targetZone = getLatestZone(skillCheck, autoSkillCheckMode)
             if not targetZone then
                 continue
             end
+
             needle.Rotation = targetZone.Rotation - 6
             pressSpace()
-            repeat task.wait(0.1) until not skillCheck.Visible
-            task.wait(5)
+
             if conn and conn.Connected then
                 conn:Disconnect()
             end
+        elseif not skillCheck or not skillCheck.Visible then
+            lastSkillCheck = nil
         end
     end
 end)
@@ -741,12 +745,11 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local Camera = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
-local targetPlayerName = _G.Config.input_TargetSurvName
 local targetPartName = "Head"
 local aimbotEnabled = false
 local function getTarget()
     for _, player in pairs(Players:GetPlayers()) do
-        if player.Name == targetPlayerName and player ~= LocalPlayer and player.Character then
+        if player.Name == _G.Config.input_TargetSurvName and player ~= LocalPlayer and player.Character then
             return player.Character:FindFirstChild(targetPartName)
         end
     end
@@ -999,6 +1002,20 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
         end
     end
 end)
+-- [FUNCTION] Do Sound
+function DoSound(sound)
+    if sound == "oof" or sound == "of" then
+        local args = {
+            workspace.godofdominating.Head.Heal_L,
+            "Playing",
+            true
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
+    else
+        ttl("Unkown sound!")
+        warn("[DOSOUND] Unkown sound!")
+    end
+end
 -- [FUNCTION] Heal Selected Player
 local isHealingSomeone = false
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
@@ -1311,4 +1328,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.0.5')
+print('f => v1.0.7')
