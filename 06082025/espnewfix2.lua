@@ -929,3 +929,4 @@ function disableObjectESP(objectName)
 
 	ESPObjects[objectName] = nil
 end
+print('e => v1.0.5')
