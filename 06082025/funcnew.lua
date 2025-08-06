@@ -95,7 +95,7 @@ function AutoWiggle()
         if _G.Config.autoWiggleType == "Normal" then
             task.wait(0.15)
         elseif _G.Config.autoWiggleType == "Insta" then
-            task.wait(0.000000001)
+            task.wait(0.0)
         end
         
     end
@@ -735,6 +735,44 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
         end
     end
 end)
+-- [FUNCTION] Aimbot
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+local targetPlayerName = _G.Config.input_TargetSurvName
+local targetPartName = "Head"
+local aimbotEnabled = false
+local function getTarget()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Name == targetPlayerName and player ~= LocalPlayer and player.Character then
+            return player.Character:FindFirstChild(targetPartName)
+        end
+    end
+end
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.CapsLock then
+        aimbotEnabled = true
+    end
+end)
+UserInputService.InputEnded:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.CapsLock then
+        aimbotEnabled = false
+    end
+end)
+RunService.RenderStepped:Connect(function()
+    if aimbotEnabled then
+        local targetPart = getTarget()
+        if targetPart then
+            local camPos = Camera.CFrame.Position
+            local direction = (targetPart.Position - camPos).Unit
+            Camera.CFrame = CFrame.new(camPos, camPos + direction)
+        end
+    end
+end)
 -- Fast TP access
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
 	if not gameProcessed and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightAlt) then
@@ -1273,3 +1311,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
+print('f => v1.0.5')
