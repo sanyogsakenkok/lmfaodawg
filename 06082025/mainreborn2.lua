@@ -1389,6 +1389,39 @@ CreateConsoleInput("Command", function(command, ...)
 			ttl("DoSound crashed!")
 			warn("[CONSOLE] DoSound cannot work with args. sound: '" .. sound .. "', amount: '" .. amount .. "', sleep: '" .. sleep .. "'!")
 		end
+	elseif command == "lighting" then
+		local arg = tostring(args[1])
+		local value = tonumber(args[2])
+		local value2 = tonumber(args[3])
+		local value3 = tonumber(args[4])
+		local val = tonumber(args[5]) or nil
+		local val2 = tonumber(args[6]) or nil
+		if not value or not value2 or not value3 then return warn("Invalid RGB values") end
+		if arg == "ambient" or arg == "amb" then
+			game:GetService("Lighting").Ambient = Color3.fromRGB(value, value2, value3)
+		elseif arg == "outdoorambient" or arg == "oda" then
+			game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(value, value2, value3)
+		elseif arg == "brightness" then
+			game:GetService("Lighting").Brightness = value
+		elseif arg == "atmosphere" or arg == "atmo" then
+			game:GetService("Lighting"):FindFirstChild("Atmosphere").Color = Color3.fromRGB(value, value2, value3)
+			game:GetService("Lighting"):FindFirstChild("Atmosphere").Decay = Color3.fromRGB(value, value2, value3)
+			if val > 0 then
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Glare = val
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Haze = val
+			else
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Glare = 0
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Haze = 0
+			end
+			if type > 0 then
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Density = val2
+			else
+				game:GetService("Lighting"):FindFirstChild("Atmosphere").Density = 0
+			end
+		else
+			ttl("Lighting crashed!")
+			warn("[CONSOLE] Unknown args? :: " .. arg .. value .. value2 .. value3 .. val .. val2 .. " ,, arg-value-value2-valu3-val-val2")
+		end
 	else
 		ttl("Unknown command!")
 		warn("[CONSOLE] Unknown command '" .. command .. "'! Check list of commands in our Discord.")
@@ -1487,4 +1520,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded (fix crash v115)')
+print('fully loaded (lighting upd)')
