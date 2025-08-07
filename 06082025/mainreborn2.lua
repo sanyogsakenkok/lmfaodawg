@@ -1,4 +1,3 @@
-_G.request = true
 local function ttl(message)
     local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     local existingErrorGui = playerGui:FindFirstChild("TitleOverlay")
