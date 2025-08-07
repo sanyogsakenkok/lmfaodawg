@@ -1015,10 +1015,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 -- [FUNCTION] Do Sound
-local base = workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId
-function DoSound(sound, volume)
-    workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = base
-    workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
+function DoSound(sound)
     if sound == "oof" or sound == "of" then
         local args = {
             workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
@@ -1027,46 +1024,24 @@ function DoSound(sound, volume)
         }
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
     elseif sound == "all" or sound == "everything" then
-         local function getKiller()
+        local function getKiller()
             for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
                 if player:GetAttribute("Team") == "Killer" then
                     return player.Name
                 end
             end
         end
-        for _, obj in ipairs(workspace:GetChildren()) do
-            if obj.Name:match("Generator%d") or obj.Name:match("Pallet%d") or obj.Name:match("Chest%d") or obj.Name:match("Hiding_Spot_%d") or obj.Name:match("Hooks%d") or obj.Name:match("Window%d") or obj.Name:match("Totem%d") or obj.Name:match("Window%d") then
-                local basePart = nil
-                basePart = obj:FindFirstChildWhichIsA("BasePart", true)
-                if basePart then
-                    local args = {
-                        basePart.CFrame,
-                        1,
-                        "Default",
-                        game:GetService("Players"):WaitForChild(getKiller())
-                    }
-                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
-                end
+        for _, obj in ipairs(workspace:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                local args = {
+                    obj.CFrame,
+                    1,
+                    "Default",
+                    game:GetService("Players"):WaitForChild(getKiller())
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
             end
         end
-    elseif sound == "block" or sound == "pb" or sound == "b" then
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.wraith.Wraith.Handle.BlockSound.SoundId
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
-        local args = {
-            workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
-            "Playing",
-            true
-        }
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
-    elseif sound == "windowvault" or sound == "wv" then
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.Window1.LowCollision.WindowVaultSound.SoundId
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
-        local args = {
-            workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
-            "Playing",
-            true
-        }
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
     else
         ttl("Unknown sound!")
         warn("[DOSOUND] Unknown sound!")
@@ -1384,4 +1359,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.1.1')
+print('f => v1.1.2 (crash fix)')
