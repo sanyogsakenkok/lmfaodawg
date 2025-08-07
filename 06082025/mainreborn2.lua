@@ -1396,14 +1396,16 @@ CreateConsoleInput("Command", function(command, ...)
 		local value3 = tonumber(args[4])
 		local val = tonumber(args[5]) or nil
 		local val2 = tonumber(args[6]) or nil
-		if not value or not value2 or not value3 then return warn("Invalid RGB values") end
 		if arg == "ambient" or arg == "amb" then
+			if not value or not value2 or not value3 then return warn("Invalid RGB values") end
 			game:GetService("Lighting").Ambient = Color3.fromRGB(value, value2, value3)
 		elseif arg == "outdoorambient" or arg == "oda" then
+			if not value or not value2 or not value3 then return warn("Invalid RGB values") end
 			game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(value, value2, value3)
 		elseif arg == "brightness" then
 			game:GetService("Lighting").Brightness = value
 		elseif arg == "atmosphere" or arg == "atmo" then
+			if not value or not value2 or not value3 then return warn("Invalid RGB values") end
 			game:GetService("Lighting"):FindFirstChild("Atmosphere").Color = Color3.fromRGB(value, value2, value3)
 			game:GetService("Lighting"):FindFirstChild("Atmosphere").Decay = Color3.fromRGB(value, value2, value3)
 			if val > 0 then
@@ -1520,4 +1522,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded (lighting upd)')
+print('fully loaded (lighting upd f1x)')
