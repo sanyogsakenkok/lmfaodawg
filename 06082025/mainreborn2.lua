@@ -126,6 +126,7 @@ end)
 -- CFG
 _G.Config = {
 	skeleton = false,
+	autoDH = false,
 	autoWiggleType = "Normal",
 	players = false,
     input_TargetSurvName = "FurySex",
@@ -644,9 +645,9 @@ local function CreateNumberInput(name, default)
 	end)
 end
 
--- Переключатели и селекты
 local ToggleSelectFunctions = {
 	{ Name = "Pallet Exploit", Options = {"ON", "OFF"}, Default = "OFF" },
+	{ Name = "Auto Dead Hard", Option = {"ON", "OFF"}, Default = "OFF" },
 	{ Name = "Auto Wiggle Type", Options = {"Normal", "Insta" }, Default = "Normal" },
     { Name = "Remote Interaction #1", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Rescue" },
     { Name = "Remote Interaction #2", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Hooks" },
@@ -737,6 +738,8 @@ local function CreateToggleSelect(func)
 			else
 				setFlashZoneTransparency(1)
 			end
+		elseif safeKey == "AutoDeadHard" then
+			_G.Config.autoDH = selected
 		elseif safeKey == "RemoteInteraction#1" then
 			_G.Config.remoteIntType1 = selected
 		elseif safeKey == "RemoteInteraction#2" then
@@ -854,7 +857,7 @@ for _, func in ipairs(ToggleSelectFunctions) do
 end
 CreateHeader("Environment Exploits")
 for _, func in ipairs(ToggleSelectFunctions) do
-    if func.Name == "Unblock Window" or func.Name == "Block All Windows" or func.Name == "Pallet Exploit" or func.Name == "Auto Wiggle Type" then
+    if func.Name == "Unblock Window" or func.Name == "Block All Windows" or func.Name == "Pallet Exploit" or func.Name == "Auto Dead Hard" or func.Name == "Auto Wiggle Type" then
         CreateToggleSelect(func)
     end
 end
@@ -1522,4 +1525,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded (lighting upd f1x)')
+print('fully loaded (auto dh braz)')
