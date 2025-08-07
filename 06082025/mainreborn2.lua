@@ -647,7 +647,7 @@ end
 
 local ToggleSelectFunctions = {
 	{ Name = "Pallet Exploit", Options = {"ON", "OFF"}, Default = "OFF" },
-	{ Name = "Auto Dead Hard", Option = {"ON", "OFF"}, Default = "OFF" },
+	{ Name = "Auto Dead Hard", Options = {"ON", "OFF"}, Default = "OFF" },
 	{ Name = "Auto Wiggle Type", Options = {"Normal", "Insta" }, Default = "Normal" },
     { Name = "Remote Interaction #1", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Rescue" },
     { Name = "Remote Interaction #2", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Hooks" },
