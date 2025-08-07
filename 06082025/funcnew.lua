@@ -1024,7 +1024,7 @@ function DoSound(sound)
         }
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
     elseif sound == "all" or sound == "everything" then
-        local function getKiller()
+         local function getKiller()
             for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
                 if player:GetAttribute("Team") == "Killer" then
                     return player.Name
@@ -1032,19 +1032,17 @@ function DoSound(sound)
             end
         end
         for _, obj in ipairs(workspace:GetChildren()) do
-            for _, obj in ipairs(workspace:GetChildren()) do
-                if obj.Name:match("Generator%d") and obj.Name:match("Pallet%d") then
-                    local basePart = nil
-                    basePart = obj:FindFirstChildWhichIsA("BasePart", true)
-                    if basePart then
-                        local args = {
-                            basePart.CFrame,
-                            1,
-                            "Default",
-                            game:GetService("Players"):WaitForChild(getKiller())
-                        }
-                        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
-                    end
+            if obj.Name:match("Generator%d") or obj.Name:match("Pallet%d") or obj.Name:match("Chest%d") or obj.Name:match("Hiding_Spot_%d") or obj.Name:match("Hooks%d") or obj.Name:match("Window%d") or obj.Name:match("Totem%d") or obj.Name:match("Window%d") then
+                local basePart = nil
+                basePart = obj:FindFirstChildWhichIsA("BasePart", true)
+                if basePart then
+                    local args = {
+                        basePart.CFrame,
+                        1,
+                        "Default",
+                        game:GetService("Players"):WaitForChild(getKiller())
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
                 end
             end
         end
@@ -1383,4 +1381,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.0.9')
+print('f => v1.1.0fix')
