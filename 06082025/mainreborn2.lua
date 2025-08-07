@@ -1376,19 +1376,18 @@ CreateConsoleInput("Command", function(command, ...)
 		ttl(command .. " = " .. _G.Config.m1_enabled)
 	elseif command == "dosound" or command == "ds" then
 		local sound = tostring(args[1])
-		local volume = tonumber(args[2])
-		local amount = tonumber(args[3])
-		local sleep = tonumber(args[4])
+		local amount = tonumber(args[2])
+		local sleep = tonumber(args[3])
 		local i = 0
-		if sound ~= nil and volume ~= nil and amount ~= nil and sleep ~= nil and volume > 0 and amount > 0 then
+		if sound ~= nil and amount ~= nil and sleep ~= nil and amount > 0 and sleep > 0 then
 			while i < amount do
 				i += 1
-				DoSound(sound, volume)
+				DoSound(sound)
 				task.wait(sleep)
 			end
 		else
 			ttl("DoSound crashed!")
-			warn("[CONSOLE] DoSound cannot work with args. sound: '" .. sound .. "', volume: '" .. volume .. "', amount: '" .. amount .. "', sleep: '" .. sleep .. "'!")
+			warn("[CONSOLE] DoSound cannot work with args. sound: '" .. sound .. "', amount: '" .. amount .. "', sleep: '" .. sleep .. "'!")
 		end
 	else
 		ttl("Unknown command!")
@@ -1488,4 +1487,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded (crash client)')
+print('fully loaded (fix crash v115)')
