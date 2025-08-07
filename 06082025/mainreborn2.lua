@@ -228,7 +228,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 25)
 Title.Position = UDim2.new(0, 0, 0, 4)
 Title.BackgroundTransparency = 1
-Title.Text = "Anal Destroyer v4.0.2"
+Title.Text = "Anal Destroyer v4.0.3"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -292,7 +292,7 @@ MainFrame.Parent = ScreenGui
 
 -- Заголовок
 local Title = Instance.new("TextLabel")
-Title.Text = "Anal Destroyer v4.0.2"
+Title.Text = "Anal Destroyer v4.0.3"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 24
 Title.TextColor3 = BLUE_COLOR
@@ -648,8 +648,8 @@ end
 local ToggleSelectFunctions = {
 	{ Name = "Pallet Exploit", Options = {"ON", "OFF"}, Default = "OFF" },
 	{ Name = "Auto Wiggle Type", Options = {"Normal", "Insta" }, Default = "Normal" },
-    { Name = "Remote Interaction #1", Options = {"Rescue", "Exit Gates", "Hooks"}, Default = "Rescue" },
-    { Name = "Remote Interaction #2", Options = {"Rescue", "Exit Gates", "Hooks"}, Default = "Hooks" },
+    { Name = "Remote Interaction #1", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Rescue" },
+    { Name = "Remote Interaction #2", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Hooks" },
     { Name = "Unblock Window", Options = {"ON", "OFF"}, Default = "OFF" },
     { Name = "Block All Windows", Options = {"ON", "OFF"}, Default = "OFF" },
 	{ Name = "Show Blind Progress", Options = { "ON", "OFF" }, Default = "OFF" },
