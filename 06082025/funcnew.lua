@@ -533,7 +533,7 @@ function teleportToSurv()
         ttl("Critical Error while TP to Survivor: #3")
     end
 end
--- [FUNCTION] Remote Interaction : "N" bind
+-- [FUNCTION] Remote Interaction : "N"/"M" bind
 local function getCharacter()
     return LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 end
@@ -586,6 +586,20 @@ local function remoteHooks()
         if hk.Name:match("Hook%d") then
             local target = hk.Name
             if sabotaging then
+                task.spawn(function()
+                    while true do task.wait(1.3)
+                        if sabotaging then
+                            workspace:FindFirstChild(target).HumanoidRootPart.BrokenSound.SoundId = workspace.Totem2.Collider.TotemCleansing.SoundId
+                            workspace:FindFirstChild(target).HumanoidRootPart.BrokenSound.Volume = 5.0
+                            local args = {
+                                workspace:FindFirstChild(target).HumanoidRootPart.BrokenSound,
+                                "Playing",
+                                true
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
+                        end
+                    end
+                end)
                 local args = {
                     [1] = {
                         ["D9v8"] = {
@@ -747,7 +761,7 @@ local Camera = workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
 local targetPartName = "Head"
 local aimbotEnabled = false
-local function getTarget()
+function getTarget()
     for _, player in pairs(Players:GetPlayers()) do
         if player.Name == _G.Config.input_TargetSurvName and player ~= LocalPlayer and player.Character then
             return player.Character:FindFirstChild(targetPartName)
@@ -755,14 +769,12 @@ local function getTarget()
     end
 end
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.CapsLock then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.CapsLock then
         aimbotEnabled = true
     end
 end)
 UserInputService.InputEnded:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.CapsLock then
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.CapsLock then
         aimbotEnabled = false
     end
 end)
@@ -1006,14 +1018,57 @@ end)
 function DoSound(sound)
     if sound == "oof" or sound == "of" then
         local args = {
-            workspace.godofdominating.Head.Heal_L,
+            workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
+            "Playing",
+            true
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
+    elseif sound == "all" or sound == "everything" then
+        local function getKiller()
+            for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+                if player:GetAttribute("Team") == "Killer" then
+                    return player.Name
+                end
+            end
+        end
+        for _, obj in ipairs(workspace:GetChildren()) do
+            for _, obj in ipairs(workspace:GetChildren()) do
+                if obj.Name:match("Generator%d") and obj.Name:match("Pallet%d") then
+                    local basePart = nil
+                    basePart = obj:FindFirstChildWhichIsA("BasePart", true)
+                    if basePart then
+                        local args = {
+                            basePart.CFrame,
+                            1,
+                            "Default",
+                            game:GetService("Players"):WaitForChild(getKiller())
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
+                    end
+                end
+            end
+        end
+    elseif sound == "block" or sound == "pb" or sound == "b" then
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.wraith.Wraith.Handle.BlockSound.SoundId
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = 2.0
+        local args = {
+            workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
+            "Playing",
+            true
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
+    elseif sound == "windowvault" or sound == "wv" then
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.Window1.LowCollision.WindowVaultSound.SoundId
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = 5.0
+        local args = {
+            workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
             "Playing",
             true
         }
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
     else
-        ttl("Unkown sound!")
-        warn("[DOSOUND] Unkown sound!")
+        ttl("Unknown sound!")
+        warn("[DOSOUND] Unknown sound!")
     end
 end
 -- [FUNCTION] Heal Selected Player
@@ -1328,4 +1383,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.0.7')
+print('f => v1.0.9')
