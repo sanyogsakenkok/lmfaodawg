@@ -879,6 +879,72 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
         end
     end
 end)
+-- [FUNCTION] Auto Dead Hard
+local Players = game:GetService("Players")
+local function getKiller()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player:GetAttribute("Team") == "Killer" then
+            return player
+        end
+    end
+end
+local killer = getKiller()
+if not killer then
+    warn("killer doesnt founded BRU")
+    return
+end
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+local maxDistance = 5
+local maxAngle = 40
+
+local input = loadstring([[
+    local vim = game:GetService('VirtualInputManager')
+    return {
+        press = function(key)
+            vim:SendKeyEvent(true, key, false, nil)
+            task.wait(0.005)
+            vim:SendKeyEvent(false, key, false, nil)
+        end
+    }
+]])()
+local function isKillerLookingAtPlayer()
+    local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
+    if not killerRoot then return false end
+    local killerLookVector = killerRoot.CFrame.LookVector
+    local toPlayer = (rootPart.Position - killerRoot.Position).Unit
+    local dot = killerLookVector:Dot(toPlayer)
+    local angle = math.deg(math.acos(dot))
+    return angle <= maxAngle
+end
+local function isKillerNearPlayer()
+    local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
+    if not killerRoot then return false end
+    local dist = (rootPart.Position - killerRoot.Position).Magnitude
+    return dist <= maxDistance
+end
+local actionFolder = killer.Backpack and killer.Backpack:FindFirstChild("Scripts")
+                  and killer.Backpack.Scripts:FindFirstChild("values")
+                  and killer.Backpack.Scripts.values:FindFirstChild("Action")
+if not actionFolder then
+    warn("Action??? in Backpack -> Scripts -> values -> Action")
+    return
+end
+if not actionFolder:IsA("StringValue") then
+    warn("Action isnt StringValue")
+    return
+end
+actionFolder.Changed:Connect(function(newStatus)
+    if newStatus == "Attacking" and _G.Config.autoDH then
+        if isKillerLookingAtPlayer() and isKillerNearPlayer() then
+            print("fuck ahh killer")
+            input.press(Enum.KeyCode.LeftShift)
+            input.press(Enum.KeyCode.E)
+        end
+    end
+end)
 -- [FUNCTION] Fly : "V" bind (ultra rage function)
 local Player = game:GetService("Players").LocalPlayer
 local Character = Player.Character or Player.CharacterAdded:Wait()
@@ -1359,4 +1425,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.1.2 (crash fix)')
+print('f => v1.1.5 (auto dh)')
