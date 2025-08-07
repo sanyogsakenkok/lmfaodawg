@@ -1381,6 +1381,7 @@ CreateConsoleInput("Command", function(command, ...)
 		local i = 0
 		if sound ~= nil and amount > 0 and sleep > 0.09 then
 			while i < amount do
+				i += 1
 				DoSound(sound)
 				task.wait(sleep)
 			end
@@ -1483,4 +1484,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded')
+print('fully loaded fix')
