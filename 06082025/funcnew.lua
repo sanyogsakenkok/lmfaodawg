@@ -897,7 +897,7 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local rootPart = character:WaitForChild("HumanoidRootPart")
 
-local maxDistance = 5
+local maxDistance = 10
 local maxAngle = 40
 
 local input = loadstring([[
@@ -940,7 +940,6 @@ actionFolder.Changed:Connect(function(newStatus)
     if newStatus == "Attacking" and _G.Config.autoDH then
         if isKillerLookingAtPlayer() and isKillerNearPlayer() then
             print("fuck ahh killer")
-            input.press(Enum.KeyCode.LeftShift)
             input.press(Enum.KeyCode.E)
         end
     end
@@ -1425,4 +1424,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.1.5 (auto dh)')
+print('f => v1.5.9 (DED AD FIZXX)')
