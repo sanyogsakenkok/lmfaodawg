@@ -1015,7 +1015,10 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 -- [FUNCTION] Do Sound
-function DoSound(sound)
+local base = workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId
+function DoSound(sound, volume)
+    workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = base
+    workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
     if sound == "oof" or sound == "of" then
         local args = {
             workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
@@ -1048,7 +1051,7 @@ function DoSound(sound)
         end
     elseif sound == "block" or sound == "pb" or sound == "b" then
         workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.wraith.Wraith.Handle.BlockSound.SoundId
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = 2.0
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
         local args = {
             workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
             "Playing",
@@ -1057,7 +1060,7 @@ function DoSound(sound)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ObjectAppUpdater"):FireServer(unpack(args))
     elseif sound == "windowvault" or sound == "wv" then
         workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.SoundId = workspace.Window1.LowCollision.WindowVaultSound.SoundId
-        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = 5.0
+        workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound.Volume = tonumber(volume)
         local args = {
             workspace:FindFirstChild(game:GetService("Players").LocalPlayer.Name).Sound.LocalSound.Sound,
             "Playing",
@@ -1381,4 +1384,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.1.0fix')
+print('f => v1.1.1')
