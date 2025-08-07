@@ -1,3 +1,4 @@
+_G.request = true
 local function ttl(message)
     local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     local existingErrorGui = playerGui:FindFirstChild("TitleOverlay")
@@ -1380,7 +1381,7 @@ CreateConsoleInput("Command", function(command, ...)
 		local amount = tonumber(args[3])
 		local sleep = tonumber(args[4])
 		local i = 0
-		if sound ~= nil and volume ~= nil and amount ~= nil and sleep ~= nil and volume > 0 and amount > 0 and sleep > 0 then
+		if sound ~= nil and volume ~= nil and amount ~= nil and sleep ~= nil and volume > 0 and amount > 0 then
 			while i < amount do
 				i += 1
 				DoSound(sound, volume)
@@ -1488,4 +1489,4 @@ sound:Play()
 task.delay(5, function()
     gui:Destroy()
 end)
-print('fully loaded (fix 112)')
+print('fully loaded (crash client)')
