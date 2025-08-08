@@ -1,14 +1,12 @@
 -- [FUNCTION] Skip Cutscene
 game:GetService("UserInputService").InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Delete then
-        for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-            if player:GetAttribute("Team") == "Survivor" then
-                print('fix for survivor')
-                game:GetService("Players").LocalPlayer.PlayerGui.Intro.SurvivorCutScene.Enabled = true
-            else
-                print('fix for killer')
-                game:GetService("Players").LocalPlayer.PlayerGui.Intro.KillerCutScene.Enabled = true
-            end
+        if game:GetService("Players").LocalPlayer:GetAttribute("Team") == "Survivor" then
+            print('fix for survivor')
+            game:GetService("Players").LocalPlayer.PlayerGui.Intro.SurvivorCutScene.Enabled = true
+        else
+            print('fix for killer')
+            game:GetService("Players").LocalPlayer.PlayerGui.Intro.KillerCutScene.Enabled = true
         end
     end
 end)
@@ -445,7 +443,7 @@ function escape()
     }
 
     workspace:WaitForChild("ExitGate1", 9e9):WaitForChild("Panel", 9e9):WaitForChild("Exit_Gate", 9e9):FireServer(unpack(args))
-    task.wait(4)
+    task.wait(3)
     local args = {
         [1] = "Close";
     }
@@ -1480,4 +1478,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.2.4 (wiggle fix)')
+print('f => v1.2.5 (fixes)')
