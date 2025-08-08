@@ -1,3 +1,28 @@
+-- [FUNCTION] Skip Cutscene
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Delete then
+        for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+            if player:GetAttribute("Team") == "Survivor" then
+                print('fix for survivor')
+                game:GetService("Players").LocalPlayer.PlayerGui.Intro.SurvivorCutScene.Enabled = true
+            else
+                print('fix for killer')
+                game:GetService("Players").LocalPlayer.PlayerGui.Intro.KillerCutScene.Enabled = true
+            end
+        end
+    end
+end)
+-- [FUNCTION] Corn Remover
+pcall(function()
+    local map = workspace:FindFirstChild("Map")
+    if not map then return end
+    
+    local corn = map:FindFirstChild("Corn")
+    if corn then corn:Destroy() end
+
+    local corntanks = map:FindFirstChild("CornTanks")
+    if corntanks then corntanks:Destroy() end
+end)
 -- [FUNCTION] MoonWalk : "X" bind (legit function)
 local Player = game:GetService("Players").LocalPlayer
 local RunService = game:GetService("RunService")
@@ -69,8 +94,15 @@ Player.CharacterAdded:Connect(function(character)
     end
 end)
 -- [FUNCTION] Auto Wiggle
-function AutoWiggle()
-    while true do
+function Wiggle()
+    local args = {
+        [1] = "Wiggle",
+        [2] = game:GetService("Players"):WaitForChild(klrnm, 9e9)
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
+end
+task.spawn(function()
+    while _G.Config.auto_wiggle do
         local function getKillerName()
             for _, player in pairs(game:GetService("Players"):GetPlayers()) do
                 local backpack = player:FindFirstChild("Backpack")
@@ -86,21 +118,29 @@ function AutoWiggle()
             end
             return nil
         end
-        local klrnm = getKillerName()
-        local args = {
-            [1] = "Wiggle",
-            [2] = game:GetService("Players"):WaitForChild(klrnm, 9e9)
-        }
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
-        if _G.Config.autoWiggleType == "Normal" then
-            task.wait(0.15)
-        elseif _G.Config.autoWiggleType == "Insta" then
-            task.wait(0.0)
+        local function isHolded()
+            if game:GetService("Players").LocalPlayer.Backpack.Scripts.values.IsHolded then
+                return true
+            else
+                return false
+            end
         end
-        
+        local klrnm = getKillerName()
+        if _G.Config.autoWiggleType == "Normal" then
+            if isHolded() then
+                Wiggle()
+                task.wait(0.15)
+            end
+        elseif _G.Config.autoWiggleType == "Insta" then
+            if isHolded() then
+                for i = 0, 10 do 
+                    Wiggle()
+                end
+                task.wait(0.0)
+            end
+        end
     end
-end
-task.spawn(AutoWiggle)
+end)
 -- [FUNCTION] Auto Skillcheck
 local RunService = game:GetService("RunService")
 local vim = game:GetService("VirtualInputManager")
@@ -243,6 +283,14 @@ function GrabSurvivor()
         [3] = game:GetService("Players"):WaitForChild(_G.Config.input_TargetSurvName, 9e9);
     }
     game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents", 9e9):WaitForChild("Server_Event", 9e9):FireServer(unpack(args))
+end
+-- [FUNCTION] Drop Survivor
+function DropSurvivor()
+    local args = {
+        "Carry",
+        "Drop_Default"
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Server_Event"):FireServer(unpack(args))
 end
 -- [FUNCTION] Hook Target
 function HookSurvivor()
@@ -753,41 +801,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
         end
     end
 end)
--- [FUNCTION] Aimbot
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local Camera = workspace.CurrentCamera
-local LocalPlayer = Players.LocalPlayer
-local targetPartName = "Head"
-local aimbotEnabled = false
-function getTarget()
-    for _, player in pairs(Players:GetPlayers()) do
-        if player.Name == _G.Config.input_TargetSurvName and player ~= LocalPlayer and player.Character then
-            return player.Character:FindFirstChild(targetPartName)
-        end
-    end
-end
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.CapsLock then
-        aimbotEnabled = true
-    end
-end)
-UserInputService.InputEnded:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.CapsLock then
-        aimbotEnabled = false
-    end
-end)
-RunService.RenderStepped:Connect(function()
-    if aimbotEnabled then
-        local targetPart = getTarget()
-        if targetPart then
-            local camPos = Camera.CFrame.Position
-            local direction = (targetPart.Position - camPos).Unit
-            Camera.CFrame = CFrame.new(camPos, camPos + direction)
-        end
-    end
-end)
 -- Fast TP access
 game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
 	if not gameProcessed and game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightAlt) then
@@ -876,71 +889,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
                     end
                 end
             end
-        end
-    end
-end)
--- [FUNCTION] Auto Dead Hard
-local Players = game:GetService("Players")
-local function getKiller()
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player:GetAttribute("Team") == "Killer" then
-            return player
-        end
-    end
-end
-local killer = getKiller()
-if not killer then
-    warn("killer doesnt founded BRU")
-    return
-end
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local rootPart = character:WaitForChild("HumanoidRootPart")
-
-local maxDistance = 10
-local maxAngle = 40
-
-local input = loadstring([[
-    local vim = game:GetService('VirtualInputManager')
-    return {
-        press = function(key)
-            vim:SendKeyEvent(true, key, false, nil)
-            task.wait(0.005)
-            vim:SendKeyEvent(false, key, false, nil)
-        end
-    }
-]])()
-local function isKillerLookingAtPlayer()
-    local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
-    if not killerRoot then return false end
-    local killerLookVector = killerRoot.CFrame.LookVector
-    local toPlayer = (rootPart.Position - killerRoot.Position).Unit
-    local dot = killerLookVector:Dot(toPlayer)
-    local angle = math.deg(math.acos(dot))
-    return angle <= maxAngle
-end
-local function isKillerNearPlayer()
-    local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
-    if not killerRoot then return false end
-    local dist = (rootPart.Position - killerRoot.Position).Magnitude
-    return dist <= maxDistance
-end
-local actionFolder = killer.Backpack and killer.Backpack:FindFirstChild("Scripts")
-                  and killer.Backpack.Scripts:FindFirstChild("values")
-                  and killer.Backpack.Scripts.values:FindFirstChild("Action")
-if not actionFolder then
-    warn("Action??? in Backpack -> Scripts -> values -> Action")
-    return
-end
-if not actionFolder:IsA("StringValue") then
-    warn("Action isnt StringValue")
-    return
-end
-actionFolder.Changed:Connect(function(newStatus)
-    if newStatus == "Attacking" and _G.Config.autoDH then
-        if isKillerLookingAtPlayer() and isKillerNearPlayer() then
-            print("fuck ahh killer")
-            input.press(Enum.KeyCode.E)
         end
     end
 end)
@@ -1096,20 +1044,128 @@ function DoSound(sound)
                 end
             end
         end
-        for _, obj in ipairs(workspace:GetDescendants()) do
-            if obj:IsA("BasePart") then
-                local args = {
-                    obj.CFrame,
-                    1,
-                    "Default",
-                    game:GetService("Players"):WaitForChild(getKiller())
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
+        task.spawn(function()
+            _G.Config.dosound = true
+            ttl("Notifications started!")
+            warn("[DOSOUND] Notifications working... Wait until this end before using 'dosound " .. sound .. "' again!")
+            for _, obj in ipairs(workspace:GetDescendants()) do
+                if obj:IsA("BasePart") then
+                    local args = {
+                        obj.CFrame,
+                        1,
+                        "Default",
+                        game:GetService("Players"):WaitForChild(getKiller())
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Notification"):FireServer(unpack(args))
+                end
             end
-        end
+            ttl("Notifications stopped!")
+            _G.Config.dosound = false
+        end)
     else
         ttl("Unknown sound!")
         warn("[DOSOUND] Unknown sound!")
+    end
+end
+-- [FUNCTION] Block All Generators
+function BlockAll(state)
+    for _, obj in ipairs(workspace:GetChildren()) do
+        if obj.Name:match("Generator%d") then
+            local args = {
+                {
+                    D9v8 = {
+                        C21 = workspace:WaitForChild(obj.Name):WaitForChild("Workspots"):WaitForChild("Back"):WaitForChild("Ocuped"),
+                        C20 = state,
+                        C22 = "B101"
+                    },
+                    Bbh1O = {
+                        C21 = workspace:WaitForChild(obj.Name):WaitForChild("Workspots"):WaitForChild("Back"):WaitForChild("Ocuped"),
+                        C20 = state,
+                        C22 = "B101"
+                    },
+                    Dvh1O = {
+                        C21 = workspace:WaitForChild(obj.Name):WaitForChild("Workspots"):WaitForChild("Back"):WaitForChild("Ocuped"),
+                        C20 = state,
+                        C22 = "B101"
+                    },
+                    Dbh1O = {
+                        C21 = workspace:WaitForChild(obj.Name):WaitForChild("Workspots"):WaitForChild("Back"):WaitForChild("Ocuped"),
+                        C20 = state,
+                        C22 = "B101"
+                    },
+                    Dhv8 = {
+                        C21 = workspace:WaitForChild(obj.Name):WaitForChild("Workspots"):WaitForChild("Back"):WaitForChild("Ocuped"),
+                        C20 = state,
+                        C22 = "B101"
+                    }
+                }
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("NewPropertie"):FireServer(unpack(args))
+        elseif obj.Name:match("Window%d") then
+            if state then
+                local args = {
+                    {
+                        D9v8 = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = game:GetService("Players").LocalPlayer.Name,
+                            C22 = "S101"
+                        },
+                        Bbh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = game:GetService("Players").LocalPlayer.Name,
+                            C22 = "S101"
+                        },
+                        Dvh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = game:GetService("Players").LocalPlayer.Name,
+                            C22 = "S101"
+                        },
+                        Dbh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = game:GetService("Players").LocalPlayer.Name,
+                            C22 = "S101"
+                        },
+                        Dhv8 = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = game:GetService("Players").LocalPlayer.Name,
+                            C22 = "S101"
+                        }
+                    }
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("NewPropertie"):FireServer(unpack(args))
+            else
+                local args = {
+                    {
+                        D9v8 = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = "",
+                            C22 = "S101"
+                        },
+                        Bbh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = "",
+                            C22 = "S101"
+                        },
+                        Dvh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = "",
+                            C22 = "S101"
+                        },
+                        Dbh1O = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = "",
+                            C22 = "S101"
+                        },
+                        Dhv8 = {
+                            C21 = workspace:WaitForChild(obj.Name):WaitForChild("Panel"):WaitForChild("Vaulter"),
+                            C20 = "",
+                            C22 = "S101"
+                        }
+                    }
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("NewPropertie"):FireServer(unpack(args))
+            end
+        end
     end
 end
 -- [FUNCTION] Heal Selected Player
@@ -1424,4 +1480,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.5.9 (DED AD FIZXX)')
+print('f => v1.2.2 (skip cutscene + corn remover)')
