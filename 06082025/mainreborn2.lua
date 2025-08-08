@@ -99,7 +99,7 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 2
 })
 while game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("LoadScreen") do
-    task.wait(0.1)
+    task.wait(0.01)
 end
 local oldGui = PlayerGui:FindFirstChild("KillerInfoGui")
 if oldGui then
@@ -128,6 +128,7 @@ _G.Config = {
 	skeleton = false,
 	autoDH = false,
 	autoWiggleType = "Normal",
+	auto_wiggle = true,
 	players = false,
     input_TargetSurvName = "FurySex",
     enable_ObjectsDistance = false,
@@ -229,7 +230,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 25)
 Title.Position = UDim2.new(0, 0, 0, 4)
 Title.BackgroundTransparency = 1
-Title.Text = "Anal Destroyer v4.0.3"
+Title.Text = "Anal Destroyer v4.0.5"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -648,6 +649,7 @@ end
 local ToggleSelectFunctions = {
 	{ Name = "Pallet Exploit", Options = {"ON", "OFF"}, Default = "OFF" },
 	{ Name = "Auto Dead Hard", Options = {"ON", "OFF"}, Default = "OFF" },
+	{ Name = "Auto Wiggle", Options = {"ON", "OFF" }, Default = "ON" },
 	{ Name = "Auto Wiggle Type", Options = {"Normal", "Insta" }, Default = "Normal" },
     { Name = "Remote Interaction #1", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Rescue" },
     { Name = "Remote Interaction #2", Options = {"Rescue", "Exit Gates", "Hooks", "Generators"}, Default = "Hooks" },
@@ -740,6 +742,12 @@ local function CreateToggleSelect(func)
 			end
 		elseif safeKey == "AutoDeadHard" then
 			_G.Config.autoDH = selected
+		elseif safeKey == "AutoWiggle" then
+			if selected == "ON" then
+				_G.Config.auto_wiggle = true
+			else
+				_G.Config.auto_wiggle = false
+			end
 		elseif safeKey == "RemoteInteraction#1" then
 			_G.Config.remoteIntType1 = selected
 		elseif safeKey == "RemoteInteraction#2" then
@@ -857,9 +865,15 @@ for _, func in ipairs(ToggleSelectFunctions) do
 end
 CreateHeader("Environment Exploits")
 for _, func in ipairs(ToggleSelectFunctions) do
-    if func.Name == "Unblock Window" or func.Name == "Block All Windows" or func.Name == "Pallet Exploit" or func.Name == "Auto Dead Hard" or func.Name == "Auto Wiggle Type" then
+    if func.Name == "Pallet Exploit" or func.Name == "Unblock Window" or func.Name == "Block All Windows" then
         CreateToggleSelect(func)
     end
+end
+CreateHeader("Wiggle")
+for _, func in ipairs(ToggleSelectFunctions) do
+	if func.Name == "Auto Wiggle" or func.Name == "Auto Wiggle Type" then
+		CreateToggleSelect(func)
+	end
 end
 CreateHeader("Flashlight")
 for _, func in ipairs(ToggleSelectFunctions) do
@@ -1330,6 +1344,8 @@ CreateConsoleInput("Command", function(command, ...)
         BlessAllTotems()
 	elseif command == "grabsurvivor" or command == "grab" or command == "gs" then
 		GrabSurvivor()
+	elseif command == "dropsurvivor" or command == "drop" then
+		DropSurvivor()
 	elseif command == "hooksurvivor" or command == "hook" or command == "hk" then
 		HookSurvivor()
 	elseif command == "kickallgenerators" or command == "kickallgens" or command == "kag" then
@@ -1376,21 +1392,35 @@ CreateConsoleInput("Command", function(command, ...)
 		end
 	elseif command == "m1" then
 		_G.Config.m1_enabled = not _G.Config.m1_enabled
-		ttl(command .. " = " .. _G.Config.m1_enabled)
+		ttl(_G.Config.m1_enabled)
 	elseif command == "dosound" or command == "ds" then
 		local sound = tostring(args[1])
 		local amount = tonumber(args[2])
 		local sleep = tonumber(args[3])
 		local i = 0
-		if sound ~= nil and amount ~= nil and sleep ~= nil and amount > 0 and sleep > 0 then
+		if sound ~= nil and amount ~= nil and sleep ~= nil and amount > 0 and sleep > 0 and sound ~= "all" then
 			while i < amount do
 				i += 1
 				DoSound(sound)
 				task.wait(sleep)
 			end
+		elseif sound == "all" or sound == "everything" then
+			if _G.Config.dosound then
+				ttl("can't do it right now")
+				warn("[CONSOLE] DoSound already working. Wait for 'Notifications stopped!' message before using 'dosound " .. sound .. "' again!")
+			end
+			DoSound(sound)
 		else
 			ttl("DoSound crashed!")
 			warn("[CONSOLE] DoSound cannot work with args. sound: '" .. sound .. "', amount: '" .. amount .. "', sleep: '" .. sleep .. "'!")
+		end
+	elseif command == "blockall" or command == "block" then
+		local object = tostring(args[1])
+		local state = tostring(args[2])
+		if state == "true" or state == "t" then
+			BlockAll(object, true)
+		else
+			BlockAll(object, false)
 		end
 	elseif command == "lighting" then
 		local arg = tostring(args[1])
