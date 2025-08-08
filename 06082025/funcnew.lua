@@ -119,7 +119,7 @@ task.spawn(function()
             return nil
         end
         local function isHolded()
-            if game:GetService("Players").LocalPlayer.Backpack.Scripts.values.IsHolded then
+            if game:GetService("Players").LocalPlayer.Backpack.Scripts.values.Holded then
                 return true
             else
                 return false
@@ -1480,4 +1480,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.2.2 (skip cutscene + corn remover)')
+print('f => v1.2.4 (wiggle fix)')
