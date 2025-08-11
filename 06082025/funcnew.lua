@@ -92,6 +92,22 @@ Player.CharacterAdded:Connect(function(character)
     end
 end)
 -- [FUNCTION] Auto Wiggle
+local function getKillerName()
+	for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+		local backpack = player:FindFirstChild("Backpack")
+		if backpack then
+			local scriptsFolder = backpack:FindFirstChild("Scripts")
+			if scriptsFolder then
+				local killerFlag = scriptsFolder:FindFirstChild("Killer")
+				if killerFlag and killerFlag:IsA("BoolValue") and killerFlag.Value == true then
+					return player.Name
+				end
+			end
+		end
+	end
+	return nil
+end
+local klrnm = getKillerName()
 function Wiggle()
     local args = {
         [1] = "Wiggle",
@@ -101,21 +117,6 @@ function Wiggle()
 end
 task.spawn(function()
     while _G.Config.auto_wiggle do
-        local function getKillerName()
-            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-                local backpack = player:FindFirstChild("Backpack")
-                if backpack then
-                    local scriptsFolder = backpack:FindFirstChild("Scripts")
-                    if scriptsFolder then
-                        local killerFlag = scriptsFolder:FindFirstChild("Killer")
-                        if killerFlag and killerFlag:IsA("BoolValue") and killerFlag.Value == true then
-                            return player.Name
-                        end
-                    end
-                end
-            end
-            return nil
-        end
         local function isHolded()
             if game:GetService("Players").LocalPlayer.Backpack.Scripts.values.Holded then
                 return true
@@ -123,7 +124,6 @@ task.spawn(function()
                 return false
             end
         end
-        local klrnm = getKillerName()
         if _G.Config.autoWiggleType == "Normal" then
             if isHolded() then
                 Wiggle()
@@ -1478,4 +1478,4 @@ UserInputService.InputEnded:Connect(function(input, gp)
 		selectedButton = nil
 	end
 end)
-print('f => v1.2.5 (fixes)')
+print('f => v1.2.4 (wiggle fix)')
