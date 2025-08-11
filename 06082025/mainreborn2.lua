@@ -1,30 +1,22 @@
-local function ttl(message)
-    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    local existingErrorGui = playerGui:FindFirstChild("TitleOverlay")
-
-    if existingErrorGui then
-        existingErrorGui:Destroy()
-    end
-    -- title start
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "TitleOverlay"
-    screenGui.DisplayOrder = 99999
-    screenGui.IgnoreGuiInset = true
-    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.Position = UDim2.new(0, 0, 0, 0)
-    textLabel.Text = message
-    textLabel.TextColor3 = Color3.new(1, 1, 1)
-    textLabel.Font = Enum.Font.SourceSansBold
-    textLabel.TextSize = 50
-    textLabel.BackgroundTransparency = 1
-    textLabel.Parent = screenGui
-    task.wait(3)
-    screenGui:Destroy()
-    -- title end
-end
+-- CFG
+_G.Config = {
+	skeleton = false,
+	autoDH = false,
+	autoWiggleType = "Normal",
+	auto_wiggle = true,
+	players = false,
+    input_TargetSurvName = "FurySex",
+    enable_ObjectsDistance = false,
+    unblock_window = "OFF",
+    remoteIntType1 = "Rescue",
+    remoteIntType2 = "Hooks",
+	enabled_PalletExploit = false,
+	dash_type = "rage",
+	m1_enabled = false,
+	mw_Type = "Backward",
+	kick_fw = 40,
+	kick_up = 35
+} 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -101,6 +93,56 @@ game.StarterGui:SetCore("SendNotification", {
 while game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("LoadScreen") do
     task.wait(0.01)
 end
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+-- ENCRYPT ALL BELOW
+
+local raw = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/06082025/espnewfix2.lua?v=" .. tostring(tick())
+local raw2 = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/06082025/funcnew.lua?v=" .. tostring(tick())
+loadstring(game:HttpGet(raw, true))()
+loadstring(game:HttpGet(raw2, true))()
+
+local function ttl(message)
+    local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local existingErrorGui = playerGui:FindFirstChild("TitleOverlay")
+
+    if existingErrorGui then
+        existingErrorGui:Destroy()
+    end
+    -- title start
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "TitleOverlay"
+    screenGui.DisplayOrder = 99999
+    screenGui.IgnoreGuiInset = true
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.Position = UDim2.new(0, 0, 0, 0)
+    textLabel.Text = message
+    textLabel.TextColor3 = Color3.new(1, 1, 1)
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextSize = 50
+    textLabel.BackgroundTransparency = 1
+    textLabel.Parent = screenGui
+    task.wait(3)
+    screenGui:Destroy()
+    -- title end
+end
 local oldGui = PlayerGui:FindFirstChild("KillerInfoGui")
 if oldGui then
     oldGui:Destroy()
@@ -123,37 +165,10 @@ task.spawn(function ()
         task.wait()
     end
 end)
--- CFG
-_G.Config = {
-	skeleton = false,
-	autoDH = false,
-	autoWiggleType = "Normal",
-	auto_wiggle = true,
-	players = false,
-    input_TargetSurvName = "FurySex",
-    enable_ObjectsDistance = false,
-    unblock_window = "OFF",
-    remoteIntType1 = "Rescue",
-    remoteIntType2 = "Hooks",
-	enabled_PalletExploit = false,
-	dash_type = "rage",
-	m1_enabled = false,
-	mw_Type = "Backward",
-	kick_fw = 40,
-	kick_up = 35
-} 
 local FieldOfView_Value = 95
 local RedStain_R = 1
 local RedStain_G = 1
 local RedStain_B = 1
------------------------
--- ESP
------------------------
-local esp_link = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/06082025/espnewfix2.lua?v=" .. tostring(tick())
-local func_link = "https://raw.githubusercontent.com/sanyogsakenkok/lmfaodawg/refs/heads/main/06082025/funcnew.lua?v=" .. tostring(tick())
-
-loadstring(game:HttpGet(esp_link, true))()
-loadstring(game:HttpGet(func_link, true))()
 ----------------------------
 -- Selector!
 local Camera = workspace.CurrentCamera
